@@ -9,6 +9,7 @@ namespace SmartRestaurant.Service.Models
     public class Order
     {
         public int ID { get; set; }
+        public int TableID { get; set; }
 
         [Required]
         [StringLength(25)]
@@ -17,5 +18,8 @@ namespace SmartRestaurant.Service.Models
         public string Total { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public virtual Table Table { get; set; }
+        public virtual IEnumerable<OrderProduct> Products { get; set; }
     }
 }

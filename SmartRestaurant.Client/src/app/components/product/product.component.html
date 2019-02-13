@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col">
+    <div class="card bg-light rounded-0">
+      <div class="card-header text-center rounded-0">
+        {{ title }}
+      </div>
+      <div class="card-body rounded-0" *ngIf="!products?.length">
+        <div class="alert alert-primary m-0 rounded-0" role="alert">
+          There are no any resources to show here.
+        </div>
+      </div>
+      <div class="card-body rounded-0 p-0" *ngIf="products?.length">
+        <table class="table table-striped table-borderless m-0">
+          <thead>
+            <tr>
+              <th scope="col">PRODUCT NAME</th>
+              <th scope="col">PRICE</th>
+              <th scope="col">TAX</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td class="align-middle">{{ product.productName }}</td>
+              <td class="align-middle">{{ product.price | currency }}</td>
+              <td class="align-middle">{{ product.tax }}%</td>
+              <td class="text-right">
+                <i style="cursor: pointer" (click)="onDelete(product)" class="text-danger far fa-trash-alt"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer rounded-0 text-center text-secondary">
+        Total Products: {{ products?.length }}
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card bg-light rounded-0">
+      <div class="card-header text-center rounded-0">
+        CREATE A NEW PRODUCT
+      </div>
+      <div class="card-body rounded-0">
+        <form [formGroup]="form" autocomplete="off">
+          <div class="form-group">
+            <input 
+            [class.is-invalid]="form.get('productName').invalid && form.get('productName').touched" 
+            [class.is-valid]="form.get('productName').valid" 
+            class="form-control rounded-0" 
+            formControlName="productName" 
+            placeholder="Product Name">
+            <div *ngIf="form.get('productName').errors?.maxlength" class="invalid-feedback">
+              The product name field must be 35 characters at most.
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col">
+              <input 
+              [class.is-invalid]="form.get('price').invalid && form.get('price').touched" 
+              [class.is-valid]="form.get('price').valid" 
+              class="form-control rounded-0" 
+              formControlName="price" 
+              placeholder="Price">
+              <div *ngIf="form.get('price').errors?.pattern" class="invalid-feedback">
+                The price field must be numeric and 9 digits at most.
+              </div>
+            </div>
+            <div class="col">
+              <input 
+              [class.is-invalid]="form.get('tax').invalid && form.get('tax').touched" 
+              [class.is-valid]="form.get('tax').valid" 
+              class="form-control rounded-0" 
+              formControlName="tax" 
+              placeholder="Tax">
+              <div *ngIf="form.get('tax').errors?.pattern" class="invalid-feedback">
+                The tax field must be numeric and 9 digits at most.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer rounded-0 text-right text-secondary">
+        <button class="btn btn-secondary btn-sm rounded-0 mr-2" (click)="reset(form)">Reset</button>
+        <button class="btn btn-primary btn-sm rounded-0" [disabled]="!form.valid" (click)="onSubmit(form)">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

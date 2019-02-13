@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col">
+    <div class="card bg-light rounded-0">
+      <div class="card-header text-center rounded-0">
+        {{ title }}
+      </div>
+      <div class="card-body rounded-0" *ngIf="!tables?.length">
+        <div class="alert alert-primary m-0 rounded-0" role="alert">
+          There are no any resources to show here.
+        </div>
+      </div>
+      <div class="card-body rounded-0 p-0" *ngIf="tables?.length">
+        <table class="table table-striped table-borderless m-0">
+          <thead>
+            <tr>
+              <th scope="col">TABLE NAME</th>
+              <th scope="col">STATUS</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let table of tables">
+              <td class="align-middle">{{ table.tableName }}</td>
+              <td class="align-middle">
+                <div *ngIf="table.isAvailable" class="badge badge-primary rounded-0">Available</div>
+                <div *ngIf="!table.isAvailable" class="badge badge-warning rounded-0">Unavailable</div>
+              </td>
+              <td class="text-right">
+                <i style="cursor: pointer" (click)="onDelete(table)" class="text-danger far fa-trash-alt"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer rounded-0 text-center text-secondary">
+        Total Tables: {{ tables?.length }}
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card bg-light rounded-0">
+      <div class="card-header text-center rounded-0">
+        CREATE A NEW TABLE
+      </div>
+      <div class="card-body rounded-0">
+        <form [formGroup]="form" autocomplete="off">
+          <div class="form-group">
+            <input 
+            [class.is-invalid]="form.get('tableName').invalid && form.get('tableName').touched" 
+            [class.is-valid]="form.get('tableName').valid" 
+            class="form-control rounded-0" 
+            formControlName="tableName" 
+            placeholder="Table Name">
+            <div *ngIf="form.get('tableName').errors?.maxlength" class="invalid-feedback">
+              The table name field must be 10 characters at most.
+            </div>
+          </div>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" formControlName="isAvailable" class="custom-control-input" id="switch">
+            <label class="custom-control-label" for="switch">is available</label>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer rounded-0 text-right text-secondary">
+        <button class="btn btn-secondary btn-sm rounded-0 mr-2" (click)="reset(form)">Reset</button>
+        <button class="btn btn-primary btn-sm rounded-0" [disabled]="!form.valid" (click)="onSubmit(form)">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
