@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { ToastrModule } from 'ngx-toastr';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -16,10 +18,10 @@ import { ProductComponent } from './components/product/product.component';
 import { ProductService } from './services/product.service';
 import { ListOrderComponent } from './components/order/list-order/list-order.component';
 import { CreateOrderComponent } from './components/order/create-order/create-order.component';
-import { OrderProductComponent } from './components/order-product/order-product.component';
 import { OrderService } from './services/order.service';
 import { OrderProductService } from './services/order-product.service';
-import { CreateOrderProductComponent } from './components/order-product/create-order-product/create-order-product.component';
+import { InsertProductComponent } from './components/order/insert-product/insert-product.component';
+import { ListProductComponent } from './components/order/list-product/list-product.component';
 
 const routes: Route[] = [
   {
@@ -39,8 +41,8 @@ const routes: Route[] = [
     component: ListOrderComponent
   },
   {
-    path: 'order/insert/:id',
-    component: OrderProductComponent
+    path: 'order/:id/details',
+    component: ListProductComponent
   }
 ]
 
@@ -54,8 +56,8 @@ const routes: Route[] = [
     ProductComponent,
     ListOrderComponent,
     CreateOrderComponent,
-    OrderProductComponent,
-    CreateOrderProductComponent
+    InsertProductComponent,
+    ListProductComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,8 @@ const routes: Route[] = [
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     TableService,
@@ -73,7 +76,7 @@ const routes: Route[] = [
   ],
   entryComponents: [
     CreateOrderComponent,
-    CreateOrderProductComponent
+    InsertProductComponent
   ],
   bootstrap: [AppComponent]
 })

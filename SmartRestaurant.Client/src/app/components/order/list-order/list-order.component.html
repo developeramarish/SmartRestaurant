@@ -31,7 +31,7 @@
           </td>
           <td class="align-middle">{{ order.createdAt | date: 'dd.MM.yyyy - HH:mm:ss' }}</td>
           <td class="align-middle text-right">
-            <a class="mr-2" [routerLink]="['/order/insert/' + order.id]">
+            <a class="mr-2" [routerLink]="['/order/' + order.id + '/details']">
               <i class="fas fa-utensils"></i>
             </a>
             <i style="cursor: pointer" (click)="onDelete(order)" class="text-danger far fa-trash-alt"></i>

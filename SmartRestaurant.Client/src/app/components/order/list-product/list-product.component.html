@@ -25,13 +25,13 @@
               <td class="d-flex justify-content-between align-items-center">
                 <div>
                   {{ product.product.productName }} x {{ product.quantity }}
-                  <div class="badge badge-primary rounded-0 ml-2" *ngIf="product.isDone">Done</div>
+                  <div class="badge badge-primary rounded-0 ml-2" *ngIf="product.isDone">Ready</div>
                   <div class="badge badge-warning rounded-0 ml-2" *ngIf="!product.isDone">Pending</div>
                 </div>
                 <div>
                   {{ (product.product.price + (product.product.price * product.product.tax / 100)) * product.quantity | currency }}
                   <i *ngIf="!product.isDone" style="cursor: pointer" (click)="onToggle(product)" class="text-success fas fa-check ml-2"></i>
-                  <i *ngIf="product.isDone" style="cursor: pointer" (click)="onToggle(product)" class="text-danger fas fa-window-close ml-2"></i>
+                  <i *ngIf="product.isDone" style="cursor: pointer" (click)="onToggle(product)" class="text-secondary fas fa-window-close ml-2"></i>
                   <i style="cursor: pointer" (click)="onDelete(order, product)" class="text-danger far fa-trash-alt ml-2"></i>
                 </div>
               </td>

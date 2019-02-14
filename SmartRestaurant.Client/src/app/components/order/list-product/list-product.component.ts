@@ -6,20 +6,21 @@ import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/models/product';
 import { OrderProductService } from 'src/app/services/order-product.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { CreateOrderProductComponent } from './create-order-product/create-order-product.component';
+import { InsertProductComponent } from '../insert-product/insert-product.component';
 import { OrderProduct } from 'src/app/models/order-product';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-order-product',
-  templateUrl: './order-product.component.html',
-  styleUrls: ['./order-product.component.css']
+  selector: 'app-list-product',
+  templateUrl: './list-product.component.html',
+  styleUrls: ['./list-product.component.css']
 })
-export class OrderProductComponent implements OnInit {
+export class ListProductComponent implements OnInit {
   order: Order;
   products: Product[];
   total: number;
 
-  constructor(private dialog: MatDialog, private orderService: OrderService, private route: ActivatedRoute, private productService: ProductService, private orderProductService: OrderProductService) { }
+  constructor(private dialog: MatDialog, private orderService: OrderService, private route: ActivatedRoute, private productService: ProductService, private orderProductService: OrderProductService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -54,7 +55,7 @@ export class OrderProductComponent implements OnInit {
     dialogConfig.width = '15%';
     dialogConfig.data = { orderID, productID }
 
-    this.dialog.open(CreateOrderProductComponent, dialogConfig);
+    this.dialog.open(InsertProductComponent, dialogConfig);
   }
 
   onDelete(order: Order, product: OrderProduct): void {
@@ -64,6 +65,7 @@ export class OrderProductComponent implements OnInit {
           const index = this.orderProductService.orderProducts.indexOf(product);
           this.orderProductService.orderProducts.splice(index, 1);
           this.orderService.getTotal(order.id);
+          this.toastr.warning('You have been deleted the product from current order successfully.', 'Successfully');
         },
         err => {
           console.log(err);
@@ -75,10 +77,11 @@ export class OrderProductComponent implements OnInit {
 
   onToggle(product: OrderProduct): void {
     if (product.isDone === false) {
-      if (confirm('Are you sure to confirm this product?')) {
+      if (confirm('Are you sure to set this product is ready?')) {
         this.orderProductService.putOrderProduct(product).subscribe(
           res => {
             product.isDone = !product.isDone;
+            this.toastr.success('You have been changed as ready the product that was not ready on current order successfully.', 'Successfully');
           },
           err => {
             console.log(err);
@@ -91,6 +94,7 @@ export class OrderProductComponent implements OnInit {
         this.orderProductService.putOrderProduct(product).subscribe(
           res => {
             product.isDone = !product.isDone;
+            this.toastr.warning('You have been changed as not ready the product that was ready on current order successfully.', 'Successfully');
           },
           err => {
             console.log(err);

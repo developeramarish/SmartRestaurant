@@ -3,6 +3,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { FormBuilder, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { TableService } from 'src/app/services/table.service';
 import { Table } from 'src/app/models/table';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-order',
@@ -13,7 +14,7 @@ export class CreateOrderComponent implements OnInit {
   title: string = 'CREATE A NEW ORDER';
   tables: Table[];
 
-  constructor(private orderService: OrderService, private fb: FormBuilder, private tableService: TableService) { }
+  constructor(private orderService: OrderService, private fb: FormBuilder, private tableService: TableService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.tableService.getAvailableTables().then(res => this.tables = res as Table[]);
@@ -36,6 +37,7 @@ export class CreateOrderComponent implements OnInit {
       res => {
         this.tableService.getAvailableTables().then(res => this.tables = res as Table[]);
         this.orderService.getOrders();
+        this.toastr.success('You have been created the order successfully.', 'Successfully');
         form.reset();
       },
       err => {

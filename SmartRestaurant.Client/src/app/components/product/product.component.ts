@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/models/product';
 import { FormBuilder, Validators, NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product',
@@ -12,7 +13,7 @@ export class ProductComponent implements OnInit {
   products: Product[];
   title: string = 'PRODUCTS';
 
-  constructor(private service: ProductService, private fb: FormBuilder) { }
+  constructor(private service: ProductService, private fb: FormBuilder, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.service.getProducts().then(res => this.products = res as Product[]);
@@ -32,6 +33,7 @@ export class ProductComponent implements OnInit {
     this.service.postProduct(form.value).subscribe(
       (res: Product) => {
         this.products.push(res);
+        this.toastr.success('You have been inserted the product successfully.', 'Successfully.');
         form.reset();
       },
       err => {
@@ -42,16 +44,19 @@ export class ProductComponent implements OnInit {
   }
 
   onDelete(product: Product): void {
-    this.service.deleteProduct(product).subscribe(
-      res => {
-        const index = this.products.indexOf(product);
-        this.products.splice(index, 1);
-      },
-      err => {
-        console.log(err);
-        alert(err);
-      }
-    );
+    if (confirm('Are you sure to delete product ' + product.productName + '?')) {
+      this.service.deleteProduct(product).subscribe(
+        res => {
+          const index = this.products.indexOf(product);
+          this.products.splice(index, 1);
+          this.toastr.warning('You have been deleted the product successfully.', 'Successfully.');
+        },
+        err => {
+          console.log(err);
+          alert(err);
+        }
+      );
+    }
   }
 
 }

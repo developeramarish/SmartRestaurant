@@ -61,7 +61,8 @@ namespace SmartRestaurant.Service.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(order).State = EntityState.Modified;
+            var existingOrder = await _context.Orders.FindAsync(id);
+            existingOrder.IsActive = !existingOrder.IsActive;
 
             try
             {
@@ -115,10 +116,14 @@ namespace SmartRestaurant.Service.Controllers
             }
 
             var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            var table = await _context.Tables.FindAsync(order.TableID);
+
+            if (order == null && table == null)
             {
                 return NotFound();
             }
+
+            table.IsAvailable = true;
 
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();

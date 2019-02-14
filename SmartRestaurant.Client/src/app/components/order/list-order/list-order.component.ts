@@ -3,6 +3,8 @@ import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateOrderComponent } from '../create-order/create-order.component';
+import { TableService } from 'src/app/services/table.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-order',
@@ -12,7 +14,7 @@ import { CreateOrderComponent } from '../create-order/create-order.component';
 export class ListOrderComponent implements OnInit {
   title: string = 'ORDERS';
 
-  constructor(private orderService: OrderService, private dialog: MatDialog) { }
+  constructor(private orderService: OrderService, private dialog: MatDialog, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.orderService.getOrders();
@@ -36,6 +38,7 @@ export class ListOrderComponent implements OnInit {
         res => {
           const index = this.orderService.orders.indexOf(order);
           this.orderService.orders.splice(index, 1);
+          this.toastr.warning('You have been deleted the order successfully.', 'Successfully');
         },
         err => {
           console.log(err);

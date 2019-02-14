@@ -26,6 +26,10 @@ export class OrderService {
     return this.http.post(this.url, order);
   }
 
+  putOrder(order: Order) {
+    return this.http.put(this.url + order.id, order);
+  }
+
   deleteOrder(order: Order) {
     return this.http.delete(this.url + order.id);
   }

@@ -46,7 +46,6 @@ namespace SmartRestaurant.Service.Controllers
             }
 
             order.Total = total;
-            order.IsActive = true;
 
             await _context.SaveChangesAsync();
 
