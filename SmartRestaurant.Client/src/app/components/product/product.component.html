@@ -16,6 +16,7 @@
               <th scope="col">PRODUCT NAME</th>
               <th scope="col">PRICE</th>
               <th scope="col">TAX</th>
+              <th scope="col">TOTAL</th>
               <th></th>
             </tr>
           </thead>
@@ -24,6 +25,7 @@
               <td class="align-middle">{{ product.productName }}</td>
               <td class="align-middle">{{ product.price | currency }}</td>
               <td class="align-middle">{{ product.tax }}%</td>
+              <td class="align-middle">{{ product.price + (product.price * product.tax / 100) | currency }}</td>
               <td class="text-right">
                 <i style="cursor: pointer" (click)="onDelete(product)" class="text-danger far fa-trash-alt"></i>
               </td>

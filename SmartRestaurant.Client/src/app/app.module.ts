@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -12,6 +14,12 @@ import { TableService } from './services/table.service';
 import { TableComponent } from './components/table/table.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProductService } from './services/product.service';
+import { ListOrderComponent } from './components/order/list-order/list-order.component';
+import { CreateOrderComponent } from './components/order/create-order/create-order.component';
+import { OrderProductComponent } from './components/order-product/order-product.component';
+import { OrderService } from './services/order.service';
+import { OrderProductService } from './services/order-product.service';
+import { CreateOrderProductComponent } from './components/order-product/create-order-product/create-order-product.component';
 
 const routes: Route[] = [
   {
@@ -25,6 +33,14 @@ const routes: Route[] = [
   {
     path: 'products',
     component: ProductComponent
+  },
+  {
+    path: 'orders',
+    component: ListOrderComponent
+  },
+  {
+    path: 'order/insert/:id',
+    component: OrderProductComponent
   }
 ]
 
@@ -35,17 +51,29 @@ const routes: Route[] = [
     FooterComponent,
     HomeComponent,
     TableComponent,
-    ProductComponent
+    ProductComponent,
+    ListOrderComponent,
+    CreateOrderComponent,
+    OrderProductComponent,
+    CreateOrderProductComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [
     TableService,
-    ProductService
+    ProductService,
+    OrderService,
+    OrderProductService
+  ],
+  entryComponents: [
+    CreateOrderComponent,
+    CreateOrderProductComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -12,56 +12,58 @@ namespace SmartRestaurant.Service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class OrderProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrderProductsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Orders
+        // GET: api/OrderProducts
         [HttpGet]
-        public IEnumerable<Order> GetOrders()
+        public IEnumerable<OrderProduct> GetOrderProducts()
         {
-            return _context.Orders.Include(o => o.Table);
+            return _context.OrderProducts;
         }
 
-        // GET: api/Orders/5
+        // GET: api/OrderProducts/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrder([FromRoute] int id)
+        public async Task<IActionResult> GetOrderProduct([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var orderProducts = await _context.OrderProducts.Where(o => o.OrderID == id).Include(o => o.Product).ToListAsync();
 
-            if (order == null)
+            if (orderProducts == null)
             {
                 return NotFound();
             }
 
-            return Ok(order);
+            return Ok(orderProducts);
         }
 
-        // PUT: api/Orders/5
+        // PUT: api/OrderProducts/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] Order order)
+        public async Task<IActionResult> PutOrderProduct([FromRoute] int id, [FromBody] OrderProduct orderProduct)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != order.ID)
+            if (id != orderProduct.ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(order).State = EntityState.Modified;
+            var existingOrderProduct = await _context.OrderProducts.FindAsync(id);
+
+            existingOrderProduct.IsDone = !existingOrderProduct.IsDone;
 
             try
             {
@@ -69,7 +71,7 @@ namespace SmartRestaurant.Service.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(id))
+                if (!OrderProductExists(id))
                 {
                     return NotFound();
                 }
@@ -82,53 +84,45 @@ namespace SmartRestaurant.Service.Controllers
             return NoContent();
         }
 
-        // POST: api/Orders
+        // POST: api/OrderProducts
         [HttpPost]
-        public async Task<IActionResult> PostOrder([FromBody] Order order)
+        public async Task<IActionResult> PostOrderProduct([FromBody] OrderProduct orderProduct)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var table = await _context.Tables.FindAsync(order.TableID);
-
-            order.Total = 0;
-            order.IsActive = false;
-            order.CreatedAt = DateTime.Now;
-
-            table.IsAvailable = false;
-
-            _context.Orders.Add(order);
+            _context.OrderProducts.Add(orderProduct);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.ID }, order);
+            return CreatedAtAction("GetOrderProduct", new { id = orderProduct.ID }, orderProduct);
         }
 
-        // DELETE: api/Orders/5
+        // DELETE: api/OrderProducts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder([FromRoute] int id)
+        public async Task<IActionResult> DeleteOrderProduct([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            var orderProduct = await _context.OrderProducts.FindAsync(id);
+            if (orderProduct == null)
             {
                 return NotFound();
             }
 
-            _context.Orders.Remove(order);
+            _context.OrderProducts.Remove(orderProduct);
             await _context.SaveChangesAsync();
 
-            return Ok(order);
+            return Ok(orderProduct);
         }
 
-        private bool OrderExists(int id)
+        private bool OrderProductExists(int id)
         {
-            return _context.Orders.Any(e => e.ID == id);
+            return _context.OrderProducts.Any(e => e.ID == id);
         }
     }
 }

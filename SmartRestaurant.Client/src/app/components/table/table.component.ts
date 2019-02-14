@@ -20,7 +20,7 @@ export class TableComponent implements OnInit {
 
   form = this.fb.group({
     tableName: [null, Validators.compose([Validators.required, Validators.maxLength(10)])],
-    isAvailable: [false]
+    isAvailable: [true]
   });
 
   onSubmit(form: NgForm): void {
@@ -29,7 +29,7 @@ export class TableComponent implements OnInit {
         this.tables.push(res);
         form.reset({
           tableName: null,
-          isAvailable: false
+          isAvailable: true
         });
       },
       err => {
@@ -57,7 +57,7 @@ export class TableComponent implements OnInit {
   reset(form: NgForm): void {
     form.reset({
       tableName: null,
-      isAvailable: false
+      isAvailable: true
     });
   }
 

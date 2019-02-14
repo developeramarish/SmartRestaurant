@@ -7,11 +7,16 @@ import { Table } from '../models/table';
 })
 export class TableService {
   private readonly url = 'https://localhost:44373/api/tables/';
+  private readonly availableUrl = 'https://localhost:44373/api/availabletables/';
 
   constructor(private http: HttpClient) { }
 
   getTables() {
     return this.http.get(this.url).toPromise();
+  }
+
+  getAvailableTables() {
+    return this.http.get(this.availableUrl).toPromise();
   }
 
   postTable(table: Table) {
