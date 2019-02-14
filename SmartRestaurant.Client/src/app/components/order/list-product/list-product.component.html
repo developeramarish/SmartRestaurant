@@ -14,7 +14,7 @@
         ORDER: {{ order?.orderName }}
       </div>
       <div *ngIf="!orderProductService.orderProducts?.length" class="card-body rounded-0">
-        <div *ngIf="!orderProductService.orderProducts?.length" class="alert alert-primary m-0 rounded-0" role="alert">
+        <div class="alert alert-primary m-0 rounded-0" role="alert">
           There are no any resources to show here.
         </div>
       </div>
@@ -49,6 +49,9 @@
         Total Products in Current Order: {{ orderProductService.orderProducts?.length }}
       </div>
     </div>
+    <button class="btn btn-primary btn-sm mt-2 rounded-0 float-right" [disabled]="orderService.total == 0" (click)="openCompleteOrderDialog(order?.id, orderService.total)">
+      Complete Order ({{ orderService.total | currency }})
+    </button>
   </div>
   <div class="col">
     <div class="card bg-light rounded-0">

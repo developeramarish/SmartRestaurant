@@ -22,6 +22,10 @@ import { OrderService } from './services/order.service';
 import { OrderProductService } from './services/order-product.service';
 import { InsertProductComponent } from './components/order/insert-product/insert-product.component';
 import { ListProductComponent } from './components/order/list-product/list-product.component';
+import { CompleteOrderComponent } from './components/order/complete-order/complete-order.component';
+import { PaymentMethodComponent } from './components/payment-method/payment-method.component';
+import { PaymentMethodService } from './services/payment-method.service';
+import { PaymentService } from './services/payment.service';
 
 const routes: Route[] = [
   {
@@ -43,6 +47,10 @@ const routes: Route[] = [
   {
     path: 'order/:id/details',
     component: ListProductComponent
+  },
+  {
+    path: 'payment-methods',
+    component: PaymentMethodComponent
   }
 ]
 
@@ -57,7 +65,9 @@ const routes: Route[] = [
     ListOrderComponent,
     CreateOrderComponent,
     InsertProductComponent,
-    ListProductComponent
+    ListProductComponent,
+    CompleteOrderComponent,
+    PaymentMethodComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,11 +82,14 @@ const routes: Route[] = [
     TableService,
     ProductService,
     OrderService,
-    OrderProductService
+    OrderProductService,
+    PaymentMethodService,
+    PaymentService
   ],
   entryComponents: [
     CreateOrderComponent,
-    InsertProductComponent
+    InsertProductComponent,
+    CompleteOrderComponent
   ],
   bootstrap: [AppComponent]
 })

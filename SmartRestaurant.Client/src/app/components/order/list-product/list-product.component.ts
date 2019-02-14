@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { InsertProductComponent } from '../insert-product/insert-product.component';
 import { OrderProduct } from 'src/app/models/order-product';
 import { ToastrService } from 'ngx-toastr';
+import { CompleteOrderComponent } from '../complete-order/complete-order.component';
 
 @Component({
   selector: 'app-list-product',
@@ -111,6 +112,18 @@ export class ListProductComponent implements OnInit {
     }
 
     return cl;
+  }
+
+  openCompleteOrderDialog(orderID: number, total: number): void {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = false;
+    dialogConfig.panelClass = 'customized-dialog';
+    dialogConfig.width = '20%';
+    dialogConfig.data = { orderID, total }
+
+    this.dialog.open(CompleteOrderComponent, dialogConfig);
   }
 
 }

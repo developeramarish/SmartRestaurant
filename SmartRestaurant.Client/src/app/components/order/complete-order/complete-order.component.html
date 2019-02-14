@@ -1,0 +1,22 @@
+<div class="card bg-light rounded-0 border-0">
+    <div class="card-header text-center rounded-0">
+      {{ title }}
+    </div>
+    <div class="card-body rounded-0">
+      <form [formGroup]="form" autocomplete="off">
+        <div class="form-group">
+          <select
+          class="form-control rounded-0"       
+          [class.is-invalid]="form.get('paymentMethodID').invalid && form.get('paymentMethodID').touched"
+          [class.is-valid]="form.get('paymentMethodID').valid"
+          formControlName="paymentMethodID">
+            <option value="{{ method.id }}" *ngFor="let method of paymentMethods">{{ method.name }}</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-right rounded-0">
+      <button class="btn btn-sm btn-secondary rounded-0" (click)="reset(form)">Reset</button>
+      <button class="btn btn-sm btn-primary rounded-0 ml-1" [disabled]="!form.valid" (click)="onSubmit(form)">Submit</button>
+    </div>
+  </div>
