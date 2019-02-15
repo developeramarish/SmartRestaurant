@@ -10,13 +10,17 @@ import { Table } from 'src/app/models/table';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  dailyGain: number;
+  dailyGains: number;
+  weeklyGains: number;
+  monthlyGains: number;
   tables: Table[];
 
   constructor(private paymentService: PaymentService, private tableService: TableService) { }
 
   ngOnInit() {
-    this.paymentService.getDailyGains().subscribe(res => this.dailyGain = res as number);
+    this.paymentService.getDailyGains().subscribe(res => this.dailyGains = res as number);
+    this.paymentService.getWeeklyGains().subscribe(res => this.weeklyGains = res as number);
+    this.paymentService.getMonthlyGains().subscribe(res => this.monthlyGains = res as number);
     this.tableService.getTables().then(res => this.tables = res as Table[]);
   }
 

@@ -7,7 +7,11 @@ import { Payment } from '../models/payment';
 })
 export class PaymentService {
   private readonly url = 'https://localhost:44373/api/payments/';
-  private readonly dailyGainUrl = 'https://localhost:44373/api/dailygains/';
+
+  // Statistics Services
+  private readonly dailyGainsUrl = 'https://localhost:44373/api/dailygains/';
+  private readonly weeklyGainsUrl = 'https://localhost:44373/api/weeklygains/';
+  private readonly monthlyGainsUrl = 'https://localhost:44373/api/monthlygains/';
 
   payments: Payment[];
 
@@ -22,6 +26,14 @@ export class PaymentService {
   }
 
   getDailyGains() {
-    return this.http.get(this.dailyGainUrl);
+    return this.http.get(this.dailyGainsUrl);
+  }
+  
+  getWeeklyGains() {
+    return this.http.get(this.weeklyGainsUrl);
+  }
+
+  getMonthlyGains() {
+    return this.http.get(this.monthlyGainsUrl);
   }
 }
