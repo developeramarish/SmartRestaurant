@@ -31,6 +31,7 @@ export class CompleteOrderComponent implements OnInit {
     this.paymentService.postPayment(form.value).subscribe(
       res => {
         this.toastr.success('You have been completed the order successfully.', 'Successfully');
+        window.location.reload();
         form.reset();
       },
       err => {

@@ -10,6 +10,8 @@ import { InsertProductComponent } from '../insert-product/insert-product.compone
 import { OrderProduct } from 'src/app/models/order-product';
 import { ToastrService } from 'ngx-toastr';
 import { CompleteOrderComponent } from '../complete-order/complete-order.component';
+import { Payment } from 'src/app/models/payment';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-list-product',
@@ -20,8 +22,9 @@ export class ListProductComponent implements OnInit {
   order: Order;
   products: Product[];
   total: number;
+  payment: Payment;
 
-  constructor(private dialog: MatDialog, private orderService: OrderService, private route: ActivatedRoute, private productService: ProductService, private orderProductService: OrderProductService, private toastr: ToastrService) { }
+  constructor(private paymentService: PaymentService, private dialog: MatDialog, private orderService: OrderService, private route: ActivatedRoute, private productService: ProductService, private orderProductService: OrderProductService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -29,6 +32,10 @@ export class ListProductComponent implements OnInit {
       this.orderService.getOrder(params.id).subscribe(
         res => {
           this.order = res as Order;
+          // Get the payment which belongs to current order if there is exist.
+          if (this.order.isPaid === true) {
+            this.paymentService.getPayment(params.id).then(res => this.payment = res as Payment);
+          }
         },
         err => {
           console.log(err);

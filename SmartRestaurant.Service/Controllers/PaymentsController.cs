@@ -37,7 +37,7 @@ namespace SmartRestaurant.Service.Controllers
                 return BadRequest(ModelState);
             }
 
-            var payment = await _context.Payments.FindAsync(id);
+            var payment = await _context.Payments.Include(p => p.PaymentMethod).FirstOrDefaultAsync(p => p.OrderID == id);
 
             if (payment == null)
             {
@@ -91,7 +91,15 @@ namespace SmartRestaurant.Service.Controllers
                 return BadRequest(ModelState);
             }
 
+            var order = await _context.Orders.FindAsync(payment.OrderID);
+            var table = await _context.Tables.FindAsync(order.TableID);
+
             payment.CreatedAt = DateTime.Now;
+
+            order.IsPaid = true;
+            order.IsActive = false;
+
+            table.IsAvailable = true;
 
             _context.Payments.Add(payment);
             await _context.SaveChangesAsync();

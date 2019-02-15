@@ -4,5 +4,6 @@ export class Order {
     orderName: string;
     total: number;
     isActive: boolean;
+    isPaid: boolean;
     createdAt: Date;
 }

@@ -25,7 +25,7 @@ namespace SmartRestaurant.Service.Controllers
         [HttpGet]
         public IEnumerable<Order> GetOrders()
         {
-            return _context.Orders.Include(o => o.Table);
+            return _context.Orders.Include(o => o.Table).OrderByDescending(o => o.CreatedAt);
         }
 
         // GET: api/Orders/5

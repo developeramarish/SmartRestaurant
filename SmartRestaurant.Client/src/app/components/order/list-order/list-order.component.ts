@@ -50,7 +50,8 @@ export class ListOrderComponent implements OnInit {
 
   setClass(order: Order) {
     let cl = {
-      'table-success': order.isActive
+      'table-primary': order.isActive,
+      'table-success': order.isPaid
     }
 
     return cl;

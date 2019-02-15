@@ -9,6 +9,10 @@
 
 <div class="row">
   <div class="col">
+    <div *ngIf="order?.isPaid" class="alert alert-success rounded-0 mb-2" role="alert">
+      <i class="fas fa-check"></i>
+      This order has been paid on {{ payment?.createdAt | date }} for {{ payment?.total | currency }} as {{ payment?.paymentMethod.name }}.
+    </div>
     <div class="card bg-light rounded-0">
       <div class="card-header text-center rounded-0">
         ORDER: {{ order?.orderName }}
@@ -25,14 +29,14 @@
               <td class="d-flex justify-content-between align-items-center">
                 <div>
                   {{ product.product.productName }} x {{ product.quantity }}
-                  <div class="badge badge-primary rounded-0 ml-2" *ngIf="product.isDone">Ready</div>
-                  <div class="badge badge-warning rounded-0 ml-2" *ngIf="!product.isDone">Pending</div>
+                  <div class="badge badge-primary rounded-0 ml-2" *ngIf="product.isDone && !order?.isPaid">Ready</div>
+                  <div class="badge badge-warning rounded-0 ml-2" *ngIf="!product.isDone && !order?.isPaid">Pending</div>
                 </div>
                 <div>
                   {{ (product.product.price + (product.product.price * product.product.tax / 100)) * product.quantity | currency }}
-                  <i *ngIf="!product.isDone" style="cursor: pointer" (click)="onToggle(product)" class="text-success fas fa-check ml-2"></i>
-                  <i *ngIf="product.isDone" style="cursor: pointer" (click)="onToggle(product)" class="text-secondary fas fa-window-close ml-2"></i>
-                  <i style="cursor: pointer" (click)="onDelete(order, product)" class="text-danger far fa-trash-alt ml-2"></i>
+                  <i *ngIf="!product.isDone && !order?.isPaid" style="cursor: pointer" (click)="onToggle(product)" class="text-success fas fa-check ml-2"></i>
+                  <i *ngIf="product.isDone && !order?.isPaid" style="cursor: pointer" (click)="onToggle(product)" class="text-secondary fas fa-window-close ml-2"></i>
+                  <i *ngIf="!order?.isPaid" style="cursor: pointer" (click)="onDelete(order, product)" class="text-danger far fa-trash-alt ml-2"></i>
                 </div>
               </td>
             </tr>
@@ -49,16 +53,27 @@
         Total Products in Current Order: {{ orderProductService.orderProducts?.length }}
       </div>
     </div>
-    <button class="btn btn-primary btn-sm mt-2 rounded-0 float-right" [disabled]="orderService.total == 0" (click)="openCompleteOrderDialog(order?.id, orderService.total)">
-      Complete Order ({{ orderService.total | currency }})
-    </button>
+    <div class="text-right">
+      <button class="btn btn-secondary btn-sm mt-2 rounded-0" [disabled]="orderService.total == 0">
+        <i class="fas fa-print"></i>
+        Print
+      </button>
+      <button *ngIf="!order?.isPaid" class="btn btn-primary btn-sm mt-2 ml-2 rounded-0" [disabled]="orderService.total == 0" (click)="openCompleteOrderDialog(order?.id, orderService.total)">
+        Complete Order ({{ orderService.total | currency }})
+      </button>
+    </div>
   </div>
   <div class="col">
     <div class="card bg-light rounded-0">
       <div class="card-header text-center rounded-0">
         INSERT PRODUTCS TO THE ORDER
       </div>
-      <div class="card-body rounded-0 p-0">
+      <div *ngIf="order?.isPaid" class="card-body rounded-0">
+        <div class="alert alert-primary m-0 rounded-0" role="alert">
+          You cannot insert a new product since you have completed the order.
+        </div>
+      </div>
+      <div *ngIf="!order?.isPaid" class="card-body rounded-0 p-0">
         <table class="table table-striped table-borderless table-hover m-0">
           <tbody>
             <tr *ngFor="let product of products">

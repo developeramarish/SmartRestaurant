@@ -31,6 +31,7 @@ export class InsertProductComponent implements OnInit {
         this.orderProductService.getOrderProducts(this.data.orderID);
         this.orderService.getTotal(this.data.orderID);
         this.toastr.success('You have been inserted the product to current order.', 'Successfully');
+        form.reset();
         this.orderService.getOrder(this.data.orderID).subscribe(
           res => {
             this.order = res as Order;

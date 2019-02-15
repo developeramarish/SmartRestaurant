@@ -11,6 +11,7 @@ export class OrderService {
 
   orders: Order[];
   total: number;
+  order: Order;
 
   constructor(private http: HttpClient) { }
 
@@ -36,5 +37,9 @@ export class OrderService {
 
   getTotal(id: number) {
     return this.http.get(this.totalUrl + id).toPromise().then(res => this.total = res as number);
+  }
+
+  payOrder(order: Order) {
+    return order.isPaid = !order.isPaid;
   }
 }

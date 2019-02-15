@@ -3,4 +3,5 @@ export class Payment {
     orderID: number;
     paymentMethodID: number;
     total: number;
+    createdAt: Date;
 }

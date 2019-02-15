@@ -15,6 +15,7 @@
           <th scope="col">ORDER NAME</th>
           <th scope="col">TABLE</th>
           <th scope="col">TOTAL</th>
+          <th scope="col">ACTIVITY</th>
           <th scope="col">STATUS</th>
           <th scope="col">CREATED AT</th>
           <th></th>
@@ -27,7 +28,11 @@
           <td class="align-middle">{{ order.total | currency }}</td>
           <td class="align-middle">
             <div *ngIf="order.isActive" class="badge badge-primary rounded-0">ACTIVE</div>
-            <div *ngIf="!order.isActive" class="badge badge-warning rounded-0">INACTIVE</div>
+            <div *ngIf="!order.isActive" class="badge badge-secondary rounded-0">INACTIVE</div>
+          </td>
+          <td class="align-middle">
+            <div *ngIf="order.isPaid" class="badge badge-success rounded-0">Paid</div>
+            <div *ngIf="!order.isPaid" class="badge badge-warning rounded-0">Unpaid</div>
           </td>
           <td class="align-middle">{{ order.createdAt | date: 'dd.MM.yyyy - HH:mm:ss' }}</td>
           <td class="align-middle text-right">

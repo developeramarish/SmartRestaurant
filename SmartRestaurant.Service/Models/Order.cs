@@ -18,10 +18,10 @@ namespace SmartRestaurant.Service.Models
 
         public double Total { get; set; }
         public bool IsActive { get; set; }
+        public bool IsPaid { get; set; }
         public DateTime CreatedAt { get; set; }
 
         [ForeignKey("TableID")]
         public virtual Table Table { get; set; }
-        public virtual IEnumerable<OrderProduct> Products { get; set; }
     }
 }
